@@ -9,16 +9,21 @@ double pi = acos(-1);
 
 void full_array(double *arr, long long siz)
 {
+	auto start = std::chrono::high_resolution_clock::now();
 	#pragma data copyin(sum)
 #pragma acc kernels present(arr [0:siz])
 	for (int i = 0; i < siz; i++)
 	{
 		arr[i] = sin(2 * pi * i / siz);
 	}
+	auto elapsed = std::chrono::high_resolution_clock::now() - start;
+	long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+	std::cout<<"full_array: " << microseconds << std::endl;
 }
 
 double sum_elem(double *arr, long long siz)
 {
+	auto start = std::chrono::high_resolution_clock::now();
 	double sum = 0;
 #pragma data copy(sum)
 #pragma acc parallel loop present(arr [0:siz]) reduction(+: sum)
@@ -26,17 +31,24 @@ double sum_elem(double *arr, long long siz)
 	{
 		sum += arr[i];
 	}
+	auto elapsed = std::chrono::high_resolution_clock::now() - start;
+	long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+	std::cout<<"sum_elem: " << microseconds << std::endl;
 	return sum;
 }
 
 void out_elem(double *arr, long long siz)
 {
-		
-#pragma acc exit data copyout(arr [0:siz])
+	auto start = std::chrono::high_resolution_clock::now();
+#pragma acc data copyout(arr [0:siz])
+
 	for (int i = 0; i < siz; i += 10000)
 	{
 		std::cout << std::setprecision(20) << arr[i] << std::endl;
 	}
+	auto elapsed = std::chrono::high_resolution_clock::now() - start;
+	long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+	std::cout <<"out_elev: " <<microseconds << std::endl;
 }
 
 int main()
