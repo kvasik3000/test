@@ -32,10 +32,6 @@ int main(int argc, char* argv[]){
     {
         matrix[i] = new double[tol];
         new_matrix[i] = new double[tol];
-        for(int j = 0; j < tol; ++j){
-            matrix[i][j] = 20;
-            new_matrix[i][j] = 20;
-        }
     }
     #pragma acc enter data create(matrix[0:tol][0:tol],new_matrix[0:tol][0:tol],iter) copyin(tol,err)
 
