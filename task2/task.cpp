@@ -8,15 +8,6 @@
 #include <cstring>
 
 
-
-// void swap(double *arr,double *arr_s){
-//     double buf = arr;
-//     arr = arr_s;
-//     arr_s = buf;
-// }
-
-
-
 int main(int argc, char* argv[]){
     auto start = std::chrono::high_resolution_clock::now();
     double error = std::stod(argv[2]);
@@ -32,6 +23,10 @@ int main(int argc, char* argv[]){
     {
         matrix[i] = new double[tol];
         new_matrix[i] = new double[tol];
+        // for(int j = 0; j < tol; ++j){
+        //     matrix[i][j] = 20;
+        //     new_matrix[i][j] = 20;
+        // }
     }
     #pragma acc enter data create(matrix[0:tol][0:tol],new_matrix[0:tol][0:tol],iter) copyin(tol,err)
 
