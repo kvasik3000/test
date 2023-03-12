@@ -23,10 +23,10 @@ int main(int argc, char* argv[]){
     {
         matrix[i] = new double[tol];
         new_matrix[i] = new double[tol];
-        // for(int j = 0; j < tol; ++j){
-        //     matrix[i][j] = 20;
-        //     new_matrix[i][j] = 20;
-        // }
+        for(int j = 0; j < tol; ++j){
+            matrix[i][j] = 20;
+            new_matrix[i][j] = 20;
+        }
     }
     #pragma acc enter data create(matrix[0:tol][0:tol],new_matrix[0:tol][0:tol],iter) copyin(tol,err)
 
@@ -47,6 +47,7 @@ int main(int argc, char* argv[]){
 
     for (int i = 1; i < tol-1; ++i)
     {
+        
         matrix[0][i]=matrix[0][0] + (10.0 /(tol-1))*i;
         matrix[i][0]=matrix[0][0] + (10.0 /(tol-1))*i;
         matrix[tol-1][i]=matrix[tol-1][0] + (10.0 /(tol-1))*i;
@@ -88,17 +89,17 @@ int main(int argc, char* argv[]){
     std::cout<<"iter: "<<iter<<"|"<<"err: "<< err<<std::endl;
 
     #pragma acc update host(matrix[:tol][:tol])
-    // std::cout.precision(4);
-    // for (int i = 0; i < tol; i++)
-    // {
-    //     for (int j = 0; j < tol; j++)
-    //     {
-    //         std::cout<<matrix[i][j]<<'\t';
+    std::cout.precision(4);
+    for (int i = 0; i < tol; i++)
+    {
+        for (int j = 0; j < tol; j++)
+        {
+            std::cout<<matrix[i][j]<<'\t';
             
-    //     }
-    //     std::cout << std::endl;
+        }
+        std::cout << std::endl;
         
-    // }
+    }
     
     #pragma acc exit data delete(matrix[:tol][:tol], new_matrix[:tol][:tol], error)
 
