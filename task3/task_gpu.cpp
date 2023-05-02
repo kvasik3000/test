@@ -105,11 +105,11 @@ int main(int argc, char* argv[]){
             // }
             flag = !(iter%tol);
 
-            // if(flag){
+            if(flag){
                 // зануляем ошибкy на GPU
                 #pragma acc kernels
                 error = 0;
-            // }
+            }
             //тут мы параллелим , директива (loop) является директивой параллельного исполнения(Описываем какой тип параллелизма будем использовать)
             //с помощью условия collapse мы превращаем наши два вложенных цикла в один, тем самым выигрываем время
             // выполняем редукцию для error
@@ -135,8 +135,8 @@ int main(int argc, char* argv[]){
 
             //проверяем ошибку 
 
-            // if(flag)
-            // {
+            if(flag)
+            {
                 #pragma acc data present(matrix, new_matrix, step_matrix) wait(1)
                 {
                     #pragma acc host_data use_device(matrix, new_matrix, step_matrix)
@@ -176,7 +176,7 @@ int main(int argc, char* argv[]){
                 // тут если ошибка не превышает поданную ошибку err(которая наша точность), то мы заканчиваем цикл
                 if(error < err)
                     break;
-            // }
+            }
             
             iter++;
         }
